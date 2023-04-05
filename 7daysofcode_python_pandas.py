@@ -55,3 +55,49 @@ df_loan_library = pd.DataFrame(df_loan_library)
 
 df_final = df_loan_library.merge(df_data_books)
 df_final
+
+CDU_lista = []
+for CDU in df_final['localizacao']:
+  if(CDU < 100):
+    CDU_lista.append('Generalidades')
+  elif(CDU < 200):
+    CDU_lista.append('Filosofia e psicologia')
+  elif(CDU < 300):
+    CDU_lista.append('Religião')
+  elif(CDU < 400):
+    CDU_lista.append('Ciências sociais')
+  elif(CDU < 500):
+    CDU_lista.append('Classe vaga')
+  elif(CDU < 600):
+    CDU_lista.append('Matemática e ciências naturais')
+  elif(CDU < 700):
+    CDU_lista.append('Ciências aplicadas')
+  elif(CDU < 800):
+    CDU_lista.append('Belas artes')
+  elif(CDU < 900):
+    CDU_lista.append('Linguagem')
+  else:
+    CDU_lista.append('Geografia. Biografia. História.')
+
+  CDU_lista
+
+df_final['CDU_lista'] = CDU
+
+df_final = df_final.drop(columns=['registro_sistema'])
+
+df_final['matricula_ou_siape'] = df_final['matricula_ou_siape'].astype(str)
+
+categorias = {
+    range(0, 100): 'Generalidades. Ciência e conhecimento.',
+    range(100, 200): 'Filosofia e psicologia.',
+    range(200, 300): 'Religião.',
+    range(300, 400): 'Ciências sociais.',
+    range(400, 500): 'Classe vaga. Provisoriamente não ocupada.',
+    range(500, 600): 'Matemática e ciências naturais.',
+    range(600, 700): 'Ciências aplicadas.',
+    range(700, 800): 'Belas artes.',
+    range(800, 900): 'Linguagem. Língua. Linguística.',
+    range(900, 1000): 'Geografia. Biografia. História.'
+}
+
+df_final['Categoria'] = df_final['CDU_lista'].map({CDU_lista: categoria for rango, categoria in categorias.items() for CDU_lista in rango})
