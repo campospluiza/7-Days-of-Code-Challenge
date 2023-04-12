@@ -101,3 +101,33 @@ categorias = {
 }
 
 df_final['Categoria'] = df_final['CDU_lista'].map({CDU_lista: categoria for rango, categoria in categorias.items() for CDU_lista in rango})
+
+#On day 3 i started to extract data from the dataframe according to what was asked in the challenge
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df_final['data_emprestimo'] = pd.to_datetime(df_final['data_emprestimo'])
+
+prestamos_por_ano = df_final.groupby(df_final['data_emprestimo'].dt.year)['data_emprestimo'].count()
+print(prestamos_por_ano)
+
+plt.plot(prestamos_por_ano.index, prestamos_por_ano.values)
+plt.xlabel('Ano')
+plt.ylabel('Quantidade de exemplares emprestados')
+plt.show()
+
+emprestimos_por_mes = df_final.groupby([df_final['data_emprestimo'].dt.month])['data_emprestimo'].count()
+print(emprestimos_por_mes)
+
+plt.plot(emprestimos_por_mes.index, emprestimos_por_mes.values)
+plt.xlabel('Mês')
+plt.ylabel
+
+emprestimos_por_hora = df_final.groupby(df_final['data_emprestimo'].dt.hour)['data_emprestimo'].count()
+
+plt.plot(emprestimos_por_hora.index, emprestimos_por_hora.values)
+plt.xlabel('Hora')
+plt.ylabel('Número de empréstimos')
+plt.title('Evolución de empréstimos por hora')
+plt.show()
